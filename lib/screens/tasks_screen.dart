@@ -1,22 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:todoey/models/task.dart';
+import 'package:provider/provider.dart';
+import 'package:todoey/models/task_data.dart';
 import 'package:todoey/screens/add_task_screen.dart';
 import 'package:todoey/widgets/tasks_list.dart';
 
-class TasksScreen extends StatefulWidget {
-  @override
-  _TasksScreenState createState() => _TasksScreenState();
-}
-
-class _TasksScreenState extends State<TasksScreen> {
-  List<Task> tasks = [
-    Task(name: 'Buy milk'),
-    Task(name: 'Buy eggs'),
-    Task(name: 'Buy bread'),
-    Task(name: 'Walk the dog')
-  ];
-
+class TasksScreen extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,14 +20,7 @@ class _TasksScreenState extends State<TasksScreen> {
               context: context,
               builder: (context) => FractionallySizedBox(
                 heightFactor: 0.65,
-                child: AddTaskScreen(
-                    (newValue){
-                      setState(() {
-                        tasks.add(Task(name: newValue, isDone: false));
-                      });
-                      Navigator.pop(context);
-                    }
-                ),
+                child: AddTaskScreen(),
               )
           );
         },
@@ -64,7 +46,8 @@ class _TasksScreenState extends State<TasksScreen> {
                   fontWeight: FontWeight.w700
                   ),
                 ),
-                Text('${tasks.length.toString()} tasks',
+                Text(
+                  '${Provider.of<TaskData>(context).taskcount} Tasks',
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 18.0,
@@ -80,7 +63,7 @@ class _TasksScreenState extends State<TasksScreen> {
                   color: Colors.white,
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0))
               ),
-              child: TasksList(tasks: tasks),
+              child: TasksList(),
             ),
           )
         ],
